@@ -1,7 +1,6 @@
 ﻿using Domain.Contracts.Requests;
 using Domain.Contracts.Responses;
 using Domain.Interfaces.Services;
-using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.Mvc;
 
 namespace Api.Controllers
@@ -18,10 +17,41 @@ namespace Api.Controllers
         }
 
         [HttpPost]
-        public ActionResult CriarUsuario(UsuarioRequest request)
+        public ActionResult<UsuarioResponse> CriarUsuario(UsuarioCreateRequest request)
         {
-            _usuarioService.CriarEntidade(request);
-            return Ok();
+            var usuarioResponse = _usuarioService.CriarEntidade(request);
+            return Ok(usuarioResponse);
+        }
+
+        [HttpGet]
+        [Route("{id}")]
+        public ActionResult<UsuarioResponse> BuscarUsuarioPorId(Guid id)
+        {
+            var usuario = _usuarioService.BuscarUsuarioPorId(id);
+            return usuario != null ? Ok(usuario) : NotFound();
+        }
+
+        [HttpPatch]
+        [Route("{id}")]
+        public ActionResult<UsuarioResponse> EditarUsuario(UsuarioEditRequest usuarioEditRequest, Guid id)
+        {
+            var usuarioEditado = _usuarioService.EditarEntidade(usuarioEditRequest, id);
+            return Ok(usuarioEditado);
+        }
+
+        [HttpGet]
+        public ActionResult<IEnumerable<UsuarioResponse>> BuscarUsuarios()
+        {
+            var usuarios = _usuarioService.BuscarUsuarios();
+            return Ok(usuarios);
+        }
+
+        [HttpDelete]
+        [Route("{id}")]
+        public ActionResult DeletarUsuario(Guid id)
+        {
+            _usuarioService.DeletarEntidade(id);
+            return NoContent();
         }
 
     }

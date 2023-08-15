@@ -9,7 +9,7 @@ namespace Api.Profiles
     {
         public UsuarioProfile()
         {
-            CreateMap<Usuario, UsuarioRequest>().ReverseMap();
+            CreateMap<Usuario, UsuarioCreateRequest>().ReverseMap();
             CreateMap<Usuario,UsuarioResponse>().ReverseMap();
         }
     }
