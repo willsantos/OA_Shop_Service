@@ -75,7 +75,6 @@ namespace Test.Repository
             entidade.Duracao = 1;
             var entidades = _fixture.CreateMany<Curso>().ToList();
             entidades.Add(entidade);
-            var expression = new Func<Curso, bool>(c => c.Duracao == 1);
 
             _appDbContext.Setup(mock => mock.Set<Curso>()).ReturnsDbSet(entidades);
 
@@ -94,7 +93,6 @@ namespace Test.Repository
             entidade.Duracao = 1;
             var entidades = _fixture.CreateMany<Curso>().ToList();
             entidades.Add(entidade);
-            var expression = new Func<Curso, bool>(c => c.Duracao == 1);
 
             _appDbContext.Setup(mock => mock.Set<Curso>()).ReturnsDbSet(entidades);
 
