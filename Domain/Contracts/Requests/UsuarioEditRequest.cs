@@ -2,7 +2,7 @@
 
 namespace Domain.Contracts.Requests
 {
-    public class UsuarioEditRequest
+    public class UsuarioEditRequest : BaseRequest
     {
         public string? Nome { get; set; }
         [EmailAddress(ErrorMessage = "Email inválido.")]

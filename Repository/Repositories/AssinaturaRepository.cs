@@ -4,10 +4,10 @@ using Repository.Context;
 
 namespace Repository.Repositories
 {
-    public class UsuarioRepository : BaseRepository<Usuario>, IUsuarioRepository
+    public class AssinaturaRepository : BaseRepository<Assinatura>, IAssinaturaRepository
     {
         private readonly AppDbContext _dbContext;
-        public UsuarioRepository(AppDbContext dbContext) : base(dbContext)
+        public AssinaturaRepository(AppDbContext dbContext) : base(dbContext)
         {
             _dbContext = dbContext;
         }

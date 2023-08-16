@@ -1,6 +1,6 @@
 ﻿namespace Domain.Contracts.Responses
 {
-    public class UsuarioResponse
+    public class UsuarioResponse : BaseResponse
     {
         public Guid Id { get; set; }
         public string Nome { get; set; }
