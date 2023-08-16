@@ -8,18 +8,18 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace Service
 {
-    public class UsuarioService : IUsuarioService
+    public class UsuarioService : BaseService<Usuario>, IUsuarioService
     {
         private readonly IUsuarioRepository _repository;
         private readonly IMapper _mapper;
 
-        public UsuarioService(IUsuarioRepository repository, IMapper mapper)
+        public UsuarioService(IUsuarioRepository repository, IMapper mapper) : base(repository)
         {
             _repository = repository;
             _mapper = mapper;
         }
 
-        public UsuarioResponse CriarEntidade(UsuarioCreateRequest usuarioRequest)
+        public UsuarioResponse CriarUsuario(UsuarioCreateRequest usuarioRequest)
         {
             var usuario = _mapper.Map<Usuario>(usuarioRequest);
             usuario.Senha = GerarHash(usuario.Senha);
@@ -39,7 +39,7 @@ namespace Service
             return _mapper.Map<IEnumerable<UsuarioResponse>>(usuarios);
         }
 
-        public void DeletarEntidade(Guid id)
+        public void DeletarUsuario(Guid id)
         {
             var usuario = _repository.BuscarEntidadePorId(id);
             if (usuario == null)
@@ -49,7 +49,7 @@ namespace Service
             _repository.DeletarEntidade(usuario);
         }
 
-        public UsuarioResponse EditarEntidade(UsuarioEditRequest usuarioEditRequest, Guid id)
+        public UsuarioResponse EditarUsuario(UsuarioEditRequest usuarioEditRequest, Guid id)
         {
             var usuario = _repository.BuscarEntidadePorId(id);
             if (usuario == null)
@@ -64,7 +64,7 @@ namespace Service
             {
                 usuario.Nome = usuarioEditRequest.Nome;
             }
-            if(!string.IsNullOrEmpty(usuarioEditRequest.Email))
+            if (!string.IsNullOrEmpty(usuarioEditRequest.Email))
             {
                 usuario.Email = usuarioEditRequest.Email;
             }
@@ -79,7 +79,7 @@ namespace Service
 
         private bool VerificarSenha(string hash, string senhaDigitada)
         {
-            return BC.Verify(senhaDigitada,hash);
+            return BC.Verify(senhaDigitada, hash);
         }
     }
 }

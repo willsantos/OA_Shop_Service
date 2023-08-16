@@ -76,6 +76,18 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("Curso");
 
+            entity.HasMany(c => c.Assinaturas)
+                    .WithOne(a => a.Curso)
+                    .HasForeignKey(a => a.CursoId);
+
+            entity.HasMany(c => c.CursoCategoria)
+                .WithOne(cc => cc.Curso)
+                .HasForeignKey(cc => cc.CursoId);
+
+            entity.HasMany(c => c.Transacaos)
+                .WithOne(t => t.Curso)
+                .HasForeignKey(t => t.CursoId);
+
             entity.Property(e => e.Autor).HasMaxLength(50);
             entity.Property(e => e.Descricao).HasMaxLength(500);
             entity.Property(e => e.Duracao).HasColumnType("int(11)");

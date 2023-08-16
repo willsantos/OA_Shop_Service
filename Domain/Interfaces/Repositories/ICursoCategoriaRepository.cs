@@ -2,7 +2,7 @@
 
 namespace Domain.Interfaces.Repositories
 {
-    public interface IUsuarioRepository : IBaseRepository<Usuario>
+    public interface ICursoCategoriaRepository : IBaseRepository<CursoCategoria>
     {
     }
 }
