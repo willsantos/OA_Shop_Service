@@ -1,8 +1,5 @@
 # Apresentação do Projeto
 
-Olá, Panelona!
-
-Eu estou muito feliz em trabalhar com vocês nesse projeto incrível de um CMS de cursos online. Eu tenho certeza que vamos fazer um ótimo trabalho juntos e entregar um produto de qualidade para os nossos clientes.
 
 O codinome do nosso projeto será **Open Academy**, pois queremos criar uma plataforma aberta, acessível e inovadora para o ensino e a aprendizagem online. Esse é o nome que vamos usar para nos referir ao projeto internamente e externamente, até que ele esteja pronto para ser lançado oficialmente.
 
@@ -15,7 +12,7 @@ Eu gostaria de aproveitar essa oportunidade para comunicar a vocês que vamos ad
 
 Além disso, eu quero informar a vocês que vamos utilizar algumas ferramentas e processos que vão nos auxiliar na gestão do projeto no macro e no micro. São eles:
 
-- **Jira**: Esse é um software de gerenciamento de projetos ágeis, que nos permite criar, acompanhar e priorizar as tarefas do projeto. Vamos utilizar o Jira para gerenciar o projeto no macro, definindo as sprints, os objetivos, os requisitos e os critérios de aceitação. Vocês poderão encontrar dados sensíveis do projeto no Jira também, como credenciais de acesso, chaves de API e documentação técnica.
+
 - **GitHub**: Esse é um serviço de hospedagem de código-fonte, que nos permite versionar, compartilhar e colaborar no desenvolvimento do código. Vamos utilizar o GitHub para gerenciar o projeto no micro, criando projetos e tasks diretamente na plataforma. Cada task deve estar associada a um branch específico, onde vamos fazer as alterações necessárias no código. Cada branch deve ser enviado como um pull request (PR) para a branch develop, onde vamos revisar o código antes de fazer o merge.
 - **Variáveis de ambiente**: Essas são variáveis que armazenam informações específicas do ambiente onde o código está sendo executado, como configurações, credenciais e chaves. Vamos utilizar variáveis de ambiente para proteger os dados sensíveis do projeto, já que o código será open source. Assim, evitamos expor esses dados ao público e mantemos a segurança do projeto.
 - **Revisão de código**: Essa é uma prática que consiste em verificar se o código está seguindo os padrões de qualidade, estilo e funcionalidade definidos pelo projeto. Vamos utilizar a revisão de código para garantir que o código está bem escrito, testado e documentado. Cada PR deverá ser enviado com os testes feitos e passando, e deverá ser revisada por pelo menos duas pessoas antes de ser aprovada.
@@ -25,5 +22,4 @@ Eu espero que vocês tenham entendido esses padrões, práticas, ferramentas e p
 Muito obrigado pela atenção e pela colaboração de todos. Vamos nessa! 💪
 
 Um abraço, Wilson Santos
-
 Product Owner
