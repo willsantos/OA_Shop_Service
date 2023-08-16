@@ -8,12 +8,12 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace Service
 {
-    public class CursoService : BaseService<Curso>, ICursoService
+    public class CursoService : BaseService<Curso, CursoCreateRequest, CursoResponse>, ICursoService
     {
         private readonly ICursoRepository _repository;
         private readonly IMapper _mapper;
 
-        public CursoService(ICursoRepository repository, IMapper mapper) : base(repository)
+        public CursoService(ICursoRepository repository, IMapper mapper) : base(repository, mapper)
         {
             _repository = repository;
             _mapper = mapper;

@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace Test.Service
 {
-    public class CursoService
+    public class CursoServiceTest
     {
     }
 }
