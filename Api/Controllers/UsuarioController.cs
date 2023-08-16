@@ -19,7 +19,7 @@ namespace Api.Controllers
         [HttpPost]
         public ActionResult<UsuarioResponse> CriarUsuario(UsuarioCreateRequest request)
         {
-            var usuarioResponse = _usuarioService.CriarEntidade(request);
+            var usuarioResponse = _usuarioService.CriarUsuario(request);
             return Ok(usuarioResponse);
         }
 
@@ -35,7 +35,7 @@ namespace Api.Controllers
         [Route("{id}")]
         public ActionResult<UsuarioResponse> EditarUsuario(UsuarioEditRequest usuarioEditRequest, Guid id)
         {
-            var usuarioEditado = _usuarioService.EditarEntidade(usuarioEditRequest, id);
+            var usuarioEditado = _usuarioService.EditarUsuario(usuarioEditRequest, id);
             return Ok(usuarioEditado);
         }
 
@@ -50,7 +50,7 @@ namespace Api.Controllers
         [Route("{id}")]
         public ActionResult DeletarUsuario(Guid id)
         {
-            _usuarioService.DeletarEntidade(id);
+            _usuarioService.DeletarUsuario(id);
             return NoContent();
         }
 
