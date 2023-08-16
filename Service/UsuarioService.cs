@@ -8,7 +8,7 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace Service
 {
-    public class UsuarioService : BaseService<Usuario, UsuarioCreateRequest, UsuarioResponse>, IUsuarioService
+    public class UsuarioService : BaseService<Usuario>, IUsuarioService
     {
         private readonly IUsuarioRepository _repository;
         private readonly IMapper _mapper;

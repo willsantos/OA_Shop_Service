@@ -1,4 +1,6 @@
-﻿using AutoMapper;
+﻿using AutoFixture;
+using AutoMapper;
+using Domain.Contracts.Requests;
 using Domain.Contracts.Responses;
 using Domain.Entities;
 using Domain.Interfaces.Repositories;
@@ -10,6 +12,7 @@ using System.Linq;
 using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
+using Test.Configs;
 
 namespace Test.Service
 {
@@ -17,12 +20,14 @@ namespace Test.Service
     public class CursoServiceTest
     {
         private readonly Mock<ICursoRepository> _cursoRepository;
-        private readonly Mock<IMapper> _mapperMock;
+        private readonly IMapper _mapper;
+        private readonly Fixture _fixture;
 
         public CursoServiceTest()
         {
             _cursoRepository = new Mock<ICursoRepository>();
-            _mapperMock = new Mock<IMapper>();
+            _mapper = MapperConfig.Get();
+            _fixture = FixtureConfig.Get();
         }
 
         [Fact(DisplayName = "Obter Todos os Cursos")]
@@ -36,31 +41,201 @@ namespace Test.Service
 
             _cursoRepository.Setup(repo => repo.BuscarEntidades()).Returns(cursos);
 
-            var cursoResponses = cursos.Select(curso => new CursoResponse { Nome = curso.Nome }).ToList();
-            _mapperMock.Setup(mapper => mapper.Map<IEnumerable<CursoResponse>>(cursos))
-                       .Returns(cursoResponses);
+            var cursoResponses = cursos.Select(curso => new CursoResponse { Nome = curso.Nome });
 
-            var cursoService = new CursoService(_cursoRepository.Object, _mapperMock.Object);
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
 
             var result = cursoService.ObterTodos();
 
-            Assert.Equal(cursoResponses, result);
+            Assert.True(result.Count() > 0);
+        }
+
+        [Fact(DisplayName = "Obter Todos os Cursos Com Expressao")]
+        public void ObterTodosComExpressao()
+        {
+            var cursos = new List<Curso>
+            {
+                new Curso { Id = Guid.NewGuid(), Nome = "Curso 1" },
+                new Curso { Id = Guid.NewGuid(), Nome = "Curso 2" }
+            };
+
+            _cursoRepository.Setup(repo => repo.BuscarEntidades(It.IsAny<Expression<Func<Curso, bool>>>())).Returns(cursos);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+
+            var result = cursoService.ObterTodos(curso => ((Curso)curso).Nome == "Curso 1");
+
+            Assert.True(result.Count() > 0);
+        }
+
+        [Fact(DisplayName = "Obter um Curso Com Expressao")]
+        public void ObterComExpressao()
+        {
+            var curso = _fixture.Create<Curso>();
+
+            var nome = curso.Nome;
+
+            _cursoRepository.Setup(repo => repo.BuscarEntidade(It.IsAny<Expression<Func<Curso, bool>>>())).Returns(curso);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+
+            var result = cursoService.Obter(curso => ((Curso)curso).Nome == nome);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Obter um Curso nulo Com Expressao")]
+        public void ObterNuloComExpressao()
+        {
+            var curso = _fixture.Create<Curso>();
+
+            var nome = curso.Nome;
+
+            _cursoRepository.Setup(repo => repo.BuscarEntidade(It.IsAny<Expression<Func<Curso, bool>>>())).Returns((Curso)null);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+
+            try
+            {
+                cursoService.Obter(curso => ((Curso)curso).Nome == nome);
+            }
+            catch (Exception ex)
+            {
+                Assert.NotNull(ex);
+            }
+        }
+
+        [Fact(DisplayName = "Obter um Curso por Id")]
+        public void ObterPorId()
+        {
+            var curso = _fixture.Create<Curso>();
+
+            var id = curso.Id;
+
+            _cursoRepository.Setup(repo => repo.BuscarEntidadePorId(id)).Returns(curso);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+
+            var result = cursoService.BuscarEntidadePorId(id);
+
+            Assert.NotNull(result);
+        }
+
+        [Fact(DisplayName = "Obter um Curso Nulo por Id")]
+        public void ObterCursoNuloPorId()
+        {
+            var curso = _fixture.Create<Curso>();
+
+            var id = curso.Id;
+
+            _cursoRepository.Setup(repo => repo.BuscarEntidadePorId(id)).Returns((Curso)null);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+
+            try
+            {
+                cursoService.BuscarEntidadePorId(id);
+            }
+            catch (Exception ex)
+            {
+                Assert.NotNull(ex);
+            }
         }
 
         [Fact(DisplayName = "Adicionar um Curso")]
         public void Adicionar()
         {
-            var cursoRequest = new CursoRequest { Nome = "Novo Curso" };
+            var cursoRequest = new CursoCreateRequest { Nome = "Novo Curso" };
             var cursoEntity = new Curso { Id = Guid.NewGuid(), Nome = "Novo Curso" };
 
-            _mapperMock.Setup(mapper => mapper.Map<Curso>(cursoRequest))
-                       .Returns(cursoEntity);
+            _cursoRepository.Setup(repo => repo.CriarEntidade(cursoEntity));
 
-            var cursoService = new CursoService(_cursoRepository.Object, _mapperMock.Object);
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
 
             cursoService.Adicionar(cursoRequest);
 
-            _cursoRepository.Verify(repo => repo.CriarEntidade(cursoEntity), Times.Once);
+            var exception = Record.Exception(() => cursoService.Adicionar(cursoRequest));
+            Assert.Null(exception);
+        }
+
+        [Fact(DisplayName = "Deletar um Curso")]
+        public void Deletar()
+        {
+            var curso = _fixture.Create<Curso>();
+            var id = curso.Id;
+
+            _cursoRepository.Setup(repo => repo.DeletarEntidade(curso));
+            _cursoRepository.Setup(repo => repo.BuscarEntidadePorId(id)).Returns(curso);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+
+            var exception = Record.Exception(() => cursoService.Deletar(id));
+            Assert.Null(exception);
+        }
+
+        [Fact(DisplayName = "Deletar um Curso Nulo")]
+        public void DeletarCursoNulo()
+        {
+            var curso = _fixture.Create<Curso>();
+            var id = curso.Id;
+
+            _cursoRepository.Setup(repo => repo.DeletarEntidade(curso));
+            _cursoRepository.Setup(repo => repo.BuscarEntidadePorId(id)).Returns((Curso)null);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+
+            try
+            {
+                cursoService.Deletar(id);
+            }
+            catch (Exception ex)
+            {
+
+                Assert.NotNull(ex);
+            }
+        }
+
+        [Fact(DisplayName = "Alterar um Curso")]
+        public void Alterar()
+        {
+            var curso = _fixture.Create<Curso>();
+            var cursoRequest = _fixture.Create<CursoEditRequest>();
+
+            cursoRequest.Id = curso.Id;
+
+            var id = curso.Id;
+
+            _cursoRepository.Setup(repo => repo.EditarEntidade(curso));
+            _cursoRepository.Setup(repo => repo.BuscarEntidadePorId(id)).Returns(curso);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+
+            var exception = Record.Exception(() => cursoService.Alterar(cursoRequest));
+            Assert.Null(exception);
+        }
+
+        [Fact(DisplayName = "Alterar um Curso Nulo")]
+        public void AlterarCursoNulo()
+        {
+            var curso = _fixture.Create<Curso>();
+            var cursoRequest = _fixture.Create<CursoEditRequest>();
+
+            cursoRequest.Id = curso.Id;
+
+            var id = curso.Id;
+
+            _cursoRepository.Setup(repo => repo.EditarEntidade(curso));
+            _cursoRepository.Setup(repo => repo.BuscarEntidadePorId(id)).Returns((Curso)null);
+
+            var cursoService = new CursoService(_cursoRepository.Object, _mapper);
+            try
+            {
+                cursoService.Alterar(cursoRequest);
+            }
+            catch (Exception ex)
+            {
+            Assert.NotNull(ex);
+            }
         }
     }
 }

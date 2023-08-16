@@ -11,6 +11,10 @@ namespace Api.Profiles
         {
             CreateMap<Usuario, UsuarioCreateRequest>().ReverseMap();
             CreateMap<Usuario,UsuarioResponse>().ReverseMap();
+            CreateMap<Curso, CursoResponse>().ReverseMap();
+            CreateMap<Curso, CursoCreateRequest>().ReverseMap();
+            CreateMap<Curso, CursoEditRequest>().ReverseMap();
+
         }
     }
 }

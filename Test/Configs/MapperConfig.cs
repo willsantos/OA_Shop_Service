@@ -18,6 +18,5 @@ namespace Test.Configs
 
             return mockMapper.CreateMapper();
         }
-
     }
 }

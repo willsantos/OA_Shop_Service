@@ -8,20 +8,20 @@ using System.Threading.Tasks;
 
 namespace Domain.Interfaces.Services
 {
-    public interface IBaseService<T, TRequest, TResponse>
+    public interface IBaseService<TEntity>
     {
-        public IEnumerable<TResponse> ObterTodos(Expression<Func<TResponse, bool>> expression);
+        public IEnumerable<object> ObterTodos(Expression<Func<object, bool>> expression);
 
-        public TResponse Obter(Expression<Func<TResponse, bool>> expression);
+        public object Obter(Expression<Func<object, bool>> expression);
 
-        public IEnumerable<TResponse> ObterTodos();
+        public IEnumerable<object> ObterTodos();
 
-        public TResponse BuscarEntidadePorId(Guid id);
+        public object BuscarEntidadePorId(Guid id);
 
-        public void Adicionar(TRequest entity);
+        public void Adicionar(object entity);
 
         public void Deletar(Guid id);
 
-        public void Alterar(TRequest entity);
+        public void Alterar(object entity);
     }
 }

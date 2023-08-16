@@ -7,7 +7,7 @@ using System.Threading.Tasks;
 
 namespace Domain.Contracts.Requests
 {
-    public class CursoCreateRequest
+    public class CursoCreateRequest : BaseRequest
     {
         public string Nome { get; set; } = null!;
 
@@ -20,11 +20,5 @@ namespace Domain.Contracts.Requests
         public string Autor { get; set; } = null!;
 
         public string? Imagem { get; set; }
-
-        public virtual ICollection<Assinatura> Assinaturas { get; set; } = new List<Assinatura>();
-
-        public virtual ICollection<CursoCategoria> CursoCategoria { get; set; } = new List<CursoCategoria>();
-
-        public virtual ICollection<Transacao> Transacaos { get; set; } = new List<Transacao>();
     }
 }

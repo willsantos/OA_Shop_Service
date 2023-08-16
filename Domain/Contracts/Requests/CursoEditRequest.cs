@@ -5,10 +5,12 @@ using System.Linq;
 using System.Text;
 using System.Threading.Tasks;
 
-namespace Domain.Contracts.Responses
+namespace Domain.Contracts.Requests
 {
-    public class CursoResponse : BaseResponse
+    public class CursoEditRequest : BaseRequest
     {
+        public Guid Id { get; set; }
+
         public string Nome { get; set; } = null!;
 
         public string? Descricao { get; set; }
@@ -21,10 +23,5 @@ namespace Domain.Contracts.Responses
 
         public string? Imagem { get; set; }
 
-        public virtual ICollection<Assinatura> Assinaturas { get; set; } = new List<Assinatura>();
-
-        public virtual ICollection<CursoCategoria> CursoCategoria { get; set; } = new List<CursoCategoria>();
-
-        public virtual ICollection<Transacao> Transacaos { get; set; } = new List<Transacao>();
     }
 }
