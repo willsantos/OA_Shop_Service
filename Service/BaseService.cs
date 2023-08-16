@@ -31,7 +31,7 @@ namespace Service
             var entities = _repository.BuscarEntidades(_mapper.Map<Expression<Func<TEntity, bool>>>(expression));
             return _mapper.Map<IEnumerable<TResponse>>(entities);
         }
-
+        
         public TResponse Obter(Expression<Func<TResponse, bool>> expression)
         {
             var entity = _repository.BuscarEntidade(_mapper.Map<Expression<Func<TEntity, bool>>>(expression));

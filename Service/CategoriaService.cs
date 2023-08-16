@@ -8,15 +8,15 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace Service
 {
-    public class CategoriaService : BaseService<Categoria>, ICategoriaService
-    {
-        private readonly ICategoriaRepository _repository;
-        private readonly IMapper _mapper;
+    //public class CategoriaService : BaseService<Categoria>, ICategoriaService
+    //{
+    //    private readonly ICategoriaRepository _repository;
+    //    private readonly IMapper _mapper;
 
-        public CategoriaService(ICategoriaRepository repository, IMapper mapper) : base(repository)
-        {
-            _repository = repository;
-            _mapper = mapper;
-        }
-    }
+    //    public CategoriaService(ICategoriaRepository repository, IMapper mapper) : base(repository)
+    //    {
+    //        _repository = repository;
+    //        _mapper = mapper;
+    //    }
+    //}
 }

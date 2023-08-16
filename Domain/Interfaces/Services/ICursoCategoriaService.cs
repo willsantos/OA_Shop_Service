@@ -4,8 +4,8 @@ using Domain.Entities;
 
 namespace Domain.Interfaces.Services
 {
-    public interface ICursoCategoriaService : IBaseService<CursoCategoria>
-    {
+    //public interface ICursoCategoriaService : IBaseService<CursoCategoria>
+    //{
         
-    }
+    //}
 }
