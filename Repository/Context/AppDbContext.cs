@@ -1,5 +1,6 @@
 ﻿using Domain.Entities;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Options;
 
 namespace Repository.Context;
 
@@ -65,6 +66,8 @@ public partial class AppDbContext : DbContext
         {
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
+            entity.ToTable("Categoria");
+
             entity.HasIndex(e => e.Nome, "Nome").IsUnique();
 
             entity.Property(e => e.Nome).HasMaxLength(50);
@@ -84,7 +87,7 @@ public partial class AppDbContext : DbContext
                 .WithOne(cc => cc.Curso)
                 .HasForeignKey(cc => cc.CursoId);
 
-            entity.HasMany(c => c.Transacaos)
+            entity.HasMany(c => c.Transacoes)
                 .WithOne(t => t.Curso)
                 .HasForeignKey(t => t.CursoId);
 
@@ -101,6 +104,8 @@ public partial class AppDbContext : DbContext
             entity.HasKey(e => e.Id).HasName("PRIMARY");
 
             entity.HasIndex(e => e.CategoriaId, "CategoriaId");
+
+            entity.ToTable("CursoCategoria");
 
             entity.HasIndex(e => e.CursoId, "CursoId");
 
@@ -159,7 +164,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.TokenPagamento).HasMaxLength(100);
             entity.Property(e => e.Valor).HasPrecision(10, 2);
 
-            entity.HasOne(d => d.Curso).WithMany(p => p.Transacaos)
+            entity.HasOne(d => d.Curso).WithMany(p => p.Transacoes)
                 .HasForeignKey(d => d.CursoId)
                 .HasConstraintName("Transacao_ibfk_1");
 
@@ -185,4 +190,8 @@ public partial class AppDbContext : DbContext
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
+    protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+    {
+        optionsBuilder.UseLazyLoadingProxies();
+    }
 }
