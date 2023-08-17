@@ -1,11 +1,9 @@
 ﻿using Domain.Contracts.Requests;
 using Domain.Contracts.Responses;
-using Domain.Entities;
 
 namespace Domain.Interfaces.Services
 {
-    //public interface ICategoriaService : IBaseService<Categoria>
-    //{
-        
-    //}
+    public interface ICategoriaService : IBaseService<CategoriaRequest,CategoriaResponse,CategoriaRequest>
+    {
+    }
 }
