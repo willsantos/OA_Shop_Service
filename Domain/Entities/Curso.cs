@@ -18,5 +18,5 @@ public partial class Curso : Entidade
 
     public virtual ICollection<CursoCategoria> CursoCategoria { get; set; } = new List<CursoCategoria>();
 
-    public virtual ICollection<Transacao> Transacaos { get; set; } = new List<Transacao>();
+    public virtual ICollection<Transacao> Transacoes { get; set; } = new List<Transacao>();
 }
