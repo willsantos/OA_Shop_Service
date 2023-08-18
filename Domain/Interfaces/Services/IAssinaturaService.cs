@@ -3,7 +3,7 @@ using Domain.Contracts.Responses;
 
 namespace Domain.Interfaces.Services
 {
-    public interface ITransacaoService : IBaseService<TransacaoRequest, TransacaoResponse,TransacaoRequest>
+    public interface IAssinaturaService : IBaseService<AssinaturaRequest,AssinaturaResponse,AssinaturaRequest>
     {
     }
 }

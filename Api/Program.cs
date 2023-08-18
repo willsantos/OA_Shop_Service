@@ -26,6 +26,10 @@ builder.Services.AddScoped<ICursoRepository, CursoRepository>();
 builder.Services.AddScoped<ICursoService,CursoService>();
 builder.Services.AddScoped<ICategoriaRepository, CategoriaRepository>();
 builder.Services.AddScoped<ICategoriaService, CategoriaService>();
+builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
+builder.Services.AddScoped<ITransacaoService,TransacaoService>();
+builder.Services.AddScoped<IAssinaturaRepository, AssinaturaRepository>();
+builder.Services.AddScoped<IAssinaturaService,AssinaturaService>();
 
 var connectionString = Environment.GetEnvironmentVariable("OA_SHOP_CONNSTRING");
 builder.Services.AddDbContext<AppDbContext>(options =>

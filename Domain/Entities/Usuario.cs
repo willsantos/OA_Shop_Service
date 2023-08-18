@@ -11,6 +11,4 @@ public partial class Usuario : Entidade
     public virtual ICollection<Assinatura> Assinaturas { get; set; } = new List<Assinatura>();
 
     public virtual ICollection<Endereco> Enderecos { get; set; } = new List<Endereco>();
-
-    public virtual ICollection<Transacao> Transacaos { get; set; } = new List<Transacao>();
 }

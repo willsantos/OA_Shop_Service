@@ -8,7 +8,7 @@ public partial class Endereco : Entidade
 
     public string? Complemento { get; set; }
 
-    public string? Bairro { get; set; }
+    public string Bairro { get; set; }
 
     public string Cidade { get; set; } = null!;
 
@@ -16,9 +16,9 @@ public partial class Endereco : Entidade
 
     public string Cep { get; set; } = null!;
 
-    public ulong? Principal { get; set; }
+    public bool Principal { get; set; }
 
-    public Guid? UsuarioId { get; set; }
+    public Guid UsuarioId { get; set; }
 
-    public virtual Usuario? Usuario { get; set; }
+    public virtual Usuario Usuario { get; set; }
 }

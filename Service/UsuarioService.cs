@@ -30,23 +30,22 @@ namespace Service
 
         public override void Alterar(UsuarioEditRequest request, Guid id)
         {
-            var usuarioEditRequest = request as UsuarioEditRequest;
             var usuario = _repository.BuscarEntidadePorId(id);
             if (usuario == null)
             {
                 throw new ArgumentNullException(nameof(usuario));
             }
-            if (!string.IsNullOrEmpty(usuarioEditRequest.Senha))
+            if (!string.IsNullOrEmpty(request.Senha))
             {
-                usuario.Senha = GerarHash(usuarioEditRequest.Senha);
+                usuario.Senha = GerarHash(request.Senha);
             }
-            if (!string.IsNullOrEmpty(usuarioEditRequest.Nome))
+            if (!string.IsNullOrEmpty(request.Nome))
             {
-                usuario.Nome = usuarioEditRequest.Nome;
+                usuario.Nome = request.Nome;
             }
-            if (!string.IsNullOrEmpty(usuarioEditRequest.Email))
+            if (!string.IsNullOrEmpty(request.Email))
             {
-                usuario.Email = usuarioEditRequest.Email;
+                usuario.Email = request.Email;
             }
             _repository.EditarEntidade(usuario);
         }

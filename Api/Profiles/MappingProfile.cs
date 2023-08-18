@@ -16,6 +16,10 @@ namespace Api.Profiles
             CreateMap<Curso, CursoEditRequest>().ReverseMap();
             CreateMap<Categoria, CategoriaResponse>().ForMember(c => c.Cursos, src => src.MapFrom(s => s.CursoCategoria.Select(x => x.CursoId)));
             CreateMap<Categoria,CategoriaRequest>().ReverseMap();
+            CreateMap<Transacao, TransacaoResponse>().ReverseMap();
+            CreateMap<Transacao, TransacaoRequest>().ReverseMap();
+            CreateMap<Assinatura,AssinaturaRequest>().ReverseMap();
+            CreateMap<Assinatura,AssinaturaResponse>().ReverseMap();
         }
     }
 }

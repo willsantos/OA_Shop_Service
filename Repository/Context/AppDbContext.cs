@@ -45,6 +45,9 @@ public partial class AppDbContext : DbContext
 
             entity.HasIndex(e => e.UsuarioId, "UsuarioId");
 
+            entity.Property(e => e.Ativa)
+                .HasDefaultValueSql("b'0'")
+                .HasColumnType("bit(1)");
             entity.Property(e => e.DataFim).HasColumnType("datetime");
             entity.Property(e => e.DataInicio)
                 .HasDefaultValueSql("current_timestamp()")
@@ -60,6 +63,8 @@ public partial class AppDbContext : DbContext
             entity.HasOne(d => d.Usuario).WithMany(p => p.Assinaturas)
                 .HasForeignKey(d => d.UsuarioId)
                 .HasConstraintName("Assinatura_ibfk_2");
+
+            entity.HasOne(d => d.Transacao).WithOne().HasForeignKey<Assinatura>(d => d.TransacaoId).HasConstraintName("Assinatura_ibfk_3"); ;
         });
 
         modelBuilder.Entity<Categoria>(entity =>
@@ -79,18 +84,6 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("Curso");
 
-            entity.HasMany(c => c.Assinaturas)
-                    .WithOne(a => a.Curso)
-                    .HasForeignKey(a => a.CursoId);
-
-            entity.HasMany(c => c.CursoCategoria)
-                .WithOne(cc => cc.Curso)
-                .HasForeignKey(cc => cc.CursoId);
-
-            entity.HasMany(c => c.Transacoes)
-                .WithOne(t => t.Curso)
-                .HasForeignKey(t => t.CursoId);
-
             entity.Property(e => e.Autor).HasMaxLength(50);
             entity.Property(e => e.Descricao).HasMaxLength(500);
             entity.Property(e => e.Duracao).HasColumnType("int(11)");
@@ -105,9 +98,9 @@ public partial class AppDbContext : DbContext
 
             entity.HasIndex(e => e.CategoriaId, "CategoriaId");
 
-            entity.ToTable("CursoCategoria");
-
             entity.HasIndex(e => e.CursoId, "CursoId");
+
+            entity.ToTable("CursoCategoria");
 
             entity.HasOne(d => d.Categoria).WithMany(p => p.CursoCategoria)
                 .HasForeignKey(d => d.CategoriaId)
@@ -150,11 +143,9 @@ public partial class AppDbContext : DbContext
 
             entity.ToTable("Transacao");
 
-            entity.HasIndex(e => e.CursoId, "CursoId");
-
             entity.HasIndex(e => e.TokenPagamento, "TokenPagamento").IsUnique();
 
-            entity.HasIndex(e => e.UsuarioId, "UsuarioId");
+            entity.HasIndex(e => e.AssinaturaId, "Transacao_Assinatura_Id_fk");
 
             entity.Property(e => e.Data)
                 .HasDefaultValueSql("current_timestamp()")
@@ -164,13 +155,7 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.TokenPagamento).HasMaxLength(100);
             entity.Property(e => e.Valor).HasPrecision(10, 2);
 
-            entity.HasOne(d => d.Curso).WithMany(p => p.Transacoes)
-                .HasForeignKey(d => d.CursoId)
-                .HasConstraintName("Transacao_ibfk_1");
-
-            entity.HasOne(d => d.Usuario).WithMany(p => p.Transacaos)
-                .HasForeignKey(d => d.UsuarioId)
-                .HasConstraintName("Transacao_ibfk_2");
+            entity.HasOne(d => d.Assinatura).WithOne().HasForeignKey<Transacao>(d => d.AssinaturaId).HasConstraintName("Transacao_Assinatura_Id_fk");
         });
 
         modelBuilder.Entity<Usuario>(entity =>
@@ -185,8 +170,6 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Nome).HasMaxLength(50);
             entity.Property(e => e.Senha).HasMaxLength(100);
         });
-
-        OnModelCreatingPartial(modelBuilder);
     }
 
     partial void OnModelCreatingPartial(ModelBuilder modelBuilder);
