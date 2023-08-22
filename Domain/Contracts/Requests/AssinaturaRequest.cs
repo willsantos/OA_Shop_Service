@@ -16,10 +16,6 @@ namespace Domain.Contracts.Requests
         [Required]
         public Guid UsuarioId { get; set; }
         [Required]
-        public decimal Valor { get; set; }
-        [Required]
-        public MetodoPagamento MetodoPagamento { get; set; }
-        [Required]
-        public string TokenPagamento { get; set; }
+        public TransacaoRequest Transacao { get; set; }
     }
 }

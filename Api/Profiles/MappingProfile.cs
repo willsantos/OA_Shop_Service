@@ -20,6 +20,8 @@ namespace Api.Profiles
             CreateMap<Transacao, TransacaoRequest>().ReverseMap();
             CreateMap<Assinatura,AssinaturaRequest>().ReverseMap();
             CreateMap<Assinatura,AssinaturaResponse>().ReverseMap();
+            CreateMap<Endereco, EnderecoRequest>().ReverseMap();
+            CreateMap<Endereco,EnderecoResponse>().ReverseMap();
         }
     }
 }

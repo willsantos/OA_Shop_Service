@@ -9,7 +9,5 @@ namespace Domain.Contracts.Requests
         public decimal Valor { get; set; }
         [Required]
         public MetodoPagamento MetodoPagamento { get; set; }
-        [Required]
-        public string TokenPagamento { get; set; }
     }
 }

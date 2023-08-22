@@ -30,6 +30,8 @@ builder.Services.AddScoped<ITransacaoRepository, TransacaoRepository>();
 builder.Services.AddScoped<ITransacaoService,TransacaoService>();
 builder.Services.AddScoped<IAssinaturaRepository, AssinaturaRepository>();
 builder.Services.AddScoped<IAssinaturaService,AssinaturaService>();
+builder.Services.AddScoped<IEnderecoRepository, EnderecoRepository>();
+builder.Services.AddScoped<IEnderecoService,EnderecoService>();
 
 var connectionString = Environment.GetEnvironmentVariable("OA_SHOP_CONNSTRING");
 builder.Services.AddDbContext<AppDbContext>(options =>

@@ -64,7 +64,8 @@ public partial class AppDbContext : DbContext
                 .HasForeignKey(d => d.UsuarioId)
                 .HasConstraintName("Assinatura_ibfk_2");
 
-            entity.HasOne(d => d.Transacao).WithOne().HasForeignKey<Assinatura>(d => d.TransacaoId).HasConstraintName("Assinatura_ibfk_3"); ;
+            entity.HasOne(d => d.Transacao).WithOne().HasForeignKey<Assinatura>(d => d.TransacaoId);
+
         });
 
         modelBuilder.Entity<Categoria>(entity =>
@@ -145,8 +146,6 @@ public partial class AppDbContext : DbContext
 
             entity.HasIndex(e => e.TokenPagamento, "TokenPagamento").IsUnique();
 
-            entity.HasIndex(e => e.AssinaturaId, "Transacao_Assinatura_Id_fk");
-
             entity.Property(e => e.Data)
                 .HasDefaultValueSql("current_timestamp()")
                 .HasColumnType("datetime");
@@ -154,8 +153,6 @@ public partial class AppDbContext : DbContext
             entity.Property(e => e.Status).HasMaxLength(20);
             entity.Property(e => e.TokenPagamento).HasMaxLength(100);
             entity.Property(e => e.Valor).HasPrecision(10, 2);
-
-            entity.HasOne(d => d.Assinatura).WithOne().HasForeignKey<Transacao>(d => d.AssinaturaId).HasConstraintName("Transacao_Assinatura_Id_fk");
         });
 
         modelBuilder.Entity<Usuario>(entity =>

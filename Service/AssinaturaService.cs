@@ -11,12 +11,10 @@ namespace Service
     {
         private readonly IMapper _mapper;
         private readonly IAssinaturaRepository _repository;
-        private readonly ITransacaoRepository _transacaoRepository;
-        public AssinaturaService(IAssinaturaRepository repository, IMapper mapper, ITransacaoRepository transacaoRepository) : base(repository, mapper)
+        public AssinaturaService(IAssinaturaRepository repository, IMapper mapper) : base(repository, mapper)
         {
             _mapper = mapper;
             _repository = repository;
-            _transacaoRepository = transacaoRepository;
         }
 
         public override Guid Adicionar(AssinaturaRequest request)
@@ -24,10 +22,6 @@ namespace Service
             var assinatura = _mapper.Map<Assinatura>(request);
 
             _repository.CriarEntidade(assinatura);
-
-            assinatura.Transacao = new Transacao { AssinaturaId = assinatura.Id,MetodoPagamento = request.MetodoPagamento, Valor = request.Valor };
-
-            _repository.EditarEntidade(assinatura);
 
             return assinatura.Id;
         }
