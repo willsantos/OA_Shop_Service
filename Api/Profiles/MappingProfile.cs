@@ -11,10 +11,17 @@ namespace Api.Profiles
         {
             CreateMap<Usuario, UsuarioCreateRequest>().ReverseMap();
             CreateMap<Usuario,UsuarioResponse>().ReverseMap();
-            CreateMap<Curso, CursoResponse>().ReverseMap();
+            CreateMap<Curso, CursoResponse>().ForMember(c => c.Categorias, src => src.MapFrom(s => s.CursoCategoria.Select(x => x.CategoriaId)));
             CreateMap<Curso, CursoCreateRequest>().ReverseMap();
             CreateMap<Curso, CursoEditRequest>().ReverseMap();
-
+            CreateMap<Categoria, CategoriaResponse>().ForMember(c => c.Cursos, src => src.MapFrom(s => s.CursoCategoria.Select(x => x.CursoId)));
+            CreateMap<Categoria,CategoriaRequest>().ReverseMap();
+            CreateMap<Transacao, TransacaoResponse>().ReverseMap();
+            CreateMap<Transacao, TransacaoRequest>().ReverseMap();
+            CreateMap<Assinatura,AssinaturaRequest>().ReverseMap();
+            CreateMap<Assinatura,AssinaturaResponse>().ReverseMap();
+            CreateMap<Endereco, EnderecoRequest>().ReverseMap();
+            CreateMap<Endereco,EnderecoResponse>().ReverseMap();
         }
     }
 }

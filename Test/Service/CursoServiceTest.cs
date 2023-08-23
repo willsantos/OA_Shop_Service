@@ -6,12 +6,7 @@ using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Moq;
 using Service;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Text;
-using System.Threading.Tasks;
 using Test.Configs;
 
 namespace Test.Service
@@ -63,7 +58,7 @@ namespace Test.Service
 
             var cursoService = new CursoService(_cursoRepository.Object, _mapper);
 
-            var result = cursoService.ObterTodos(curso => ((Curso)curso).Nome == "Curso 1");
+            var result = cursoService.ObterTodos(curso => curso.Nome == "Curso 1");
 
             Assert.True(result.Count() > 0);
         }
@@ -79,7 +74,7 @@ namespace Test.Service
 
             var cursoService = new CursoService(_cursoRepository.Object, _mapper);
 
-            var result = cursoService.Obter(curso => ((Curso)curso).Nome == nome);
+            var result = cursoService.Obter(curso => curso.Nome == nome);
 
             Assert.NotNull(result);
         }
@@ -97,7 +92,7 @@ namespace Test.Service
 
             try
             {
-                cursoService.Obter(curso => ((Curso)curso).Nome == nome);
+                cursoService.Obter(curso => curso.Nome == nome);
             }
             catch (Exception ex)
             {
@@ -145,7 +140,7 @@ namespace Test.Service
         [Fact(DisplayName = "Adicionar um Curso")]
         public void Adicionar()
         {
-            var cursoRequest = new CursoCreateRequest { Nome = "Novo Curso" };
+            var cursoRequest = new CursoCreateRequest { Nome = "Novo Curso" , Categorias=new List<Guid> { new Guid() } };
             var cursoEntity = new Curso { Id = Guid.NewGuid(), Nome = "Novo Curso" };
 
             _cursoRepository.Setup(repo => repo.CriarEntidade(cursoEntity));
@@ -210,7 +205,7 @@ namespace Test.Service
 
             var cursoService = new CursoService(_cursoRepository.Object, _mapper);
 
-            var exception = Record.Exception(() => cursoService.Alterar(cursoRequest));
+            var exception = Record.Exception(() => cursoService.Alterar(cursoRequest, id));
             Assert.Null(exception);
         }
 
@@ -230,7 +225,7 @@ namespace Test.Service
             var cursoService = new CursoService(_cursoRepository.Object, _mapper);
             try
             {
-                cursoService.Alterar(cursoRequest);
+                cursoService.Alterar(cursoRequest, id);
             }
             catch (Exception ex)
             {

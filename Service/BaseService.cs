@@ -4,17 +4,15 @@ using Domain.Contracts.Responses;
 using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
-using System;
-using System.Collections.Generic;
-using System.Linq;
 using System.Linq.Expressions;
-using System.Security.Claims;
-using System.Text;
-using System.Threading.Tasks;
 
 namespace Service
 {
-    public abstract class BaseService<TEntity> : IBaseService<TEntity> where TEntity : Entidade
+    public abstract class BaseService<TEntity, TRequest,TResponse, TEditRequest> : IBaseService<TRequest, TResponse, TEditRequest> 
+        where TEntity : Entidade
+        where TRequest : BaseRequest
+        where TEditRequest : BaseRequest
+        where TResponse : BaseResponse
 
     {
         private readonly IBaseRepository<TEntity> _repository;
@@ -26,40 +24,41 @@ namespace Service
             _mapper = mapper;
         }
 
-        public IEnumerable<object> ObterTodos(Expression<Func<object, bool>> expression)
+        public IEnumerable<TResponse> ObterTodos(Expression<Func<TRequest, bool>> expression)
         {
             var entities = _repository.BuscarEntidades(_mapper.Map<Expression<Func<TEntity, bool>>>(expression));
-            return _mapper.Map<IEnumerable<object>>(entities);
+            return _mapper.Map<IEnumerable<TResponse>>(entities);
         }
         
-        public object Obter(Expression<Func<object, bool>> expression)
+        public TResponse Obter(Expression<Func<TRequest, bool>> expression)
         {
             var entity = _repository.BuscarEntidade(_mapper.Map<Expression<Func<TEntity, bool>>>(expression));
             if (entity == null)
                 throw new ArgumentException($"Nenhum dado encontrado");
 
-            return _mapper.Map<object>(entity);
+            return _mapper.Map<TResponse>(entity);
         }
 
-        public IEnumerable<object> ObterTodos()
+        public IEnumerable<TResponse> ObterTodos()
         {
             var entities = _repository.BuscarEntidades();
-            return _mapper.Map<IEnumerable<object>>(entities);
+            return _mapper.Map<IEnumerable<TResponse>>(entities);
         }
 
-        public object BuscarEntidadePorId(Guid id)
+        public TResponse BuscarEntidadePorId(Guid id)
         {
             var entity = _repository.BuscarEntidadePorId(id);
             if (entity == null)
                 throw new ArgumentException($"Nenhum dado encontrado para o Id {id}");
 
-            return _mapper.Map<object>(entity);
+            return _mapper.Map<TResponse>(entity);
         }
 
-        public void Adicionar(object request)
+        public virtual Guid Adicionar(TRequest request)
         {
             var entity = _mapper.Map<TEntity>(request);
             _repository.CriarEntidade(entity);
+            return entity.Id;
         }
 
         public void Deletar(Guid id)
@@ -71,13 +70,13 @@ namespace Service
             _repository.DeletarEntidade(entity);
         }
 
-        public void Alterar(object request)
+        public virtual void Alterar(TEditRequest request, Guid id)
         {
             var entity = _mapper.Map<TEntity>(request);
-            var find = _repository.BuscarEntidadePorId(entity.Id);
+            var find = _repository.BuscarEntidadePorId(id);
             if (find == null)
             {
-                throw new ArgumentException($"Nenhum dado encontrado para o Id {entity.Id}");
+                throw new ArgumentException($"Nenhum dado encontrado para o Id {id}");
             }
 
             _repository.EditarEntidade(entity);

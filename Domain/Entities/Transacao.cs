@@ -1,22 +1,16 @@
-﻿namespace Domain.Entities;
+﻿using Domain.Entities.Enums;
+
+namespace Domain.Entities;
 
 public partial class Transacao : Entidade
 {
-    public decimal? Valor { get; set; }
+    public decimal Valor { get; set; }
 
-    public DateTime? Data { get; set; }
+    public DateTime Data { get; set; } = DateTime.Now;
 
-    public string? Status { get; set; }
+    public Status Status { get; set; } = Status.Pendente;
 
-    public string? MetodoPagamento { get; set; }
+    public MetodoPagamento MetodoPagamento { get; set; }
 
-    public string? TokenPagamento { get; set; }
-
-    public Guid? CursoId { get; set; }
-
-    public Guid? UsuarioId { get; set; }
-
-    public virtual Curso? Curso { get; set; }
-
-    public virtual Usuario? Usuario { get; set; }
+    public string TokenPagamento { get; } = Guid.NewGuid().ToString();
 }

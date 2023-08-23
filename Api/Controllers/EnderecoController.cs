@@ -7,9 +7,9 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : BaseController<UsuarioCreateRequest,UsuarioResponse,UsuarioEditRequest>
+    public class EnderecoController : BaseController<EnderecoRequest, EnderecoResponse, EnderecoRequest>
     {
-        public UsuarioController(IUsuarioService usuarioService) : base(usuarioService)
+        public EnderecoController(IEnderecoService service) : base(service)
         {
         }
     }

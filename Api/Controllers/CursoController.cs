@@ -7,9 +7,9 @@ namespace Api.Controllers
 {
     [Route("api/[controller]")]
     [ApiController]
-    public class UsuarioController : BaseController<UsuarioCreateRequest,UsuarioResponse,UsuarioEditRequest>
+    public class CursoController : BaseController<CursoCreateRequest, CursoResponse,CursoEditRequest>
     {
-        public UsuarioController(IUsuarioService usuarioService) : base(usuarioService)
+        public CursoController(ICursoService service) : base(service)
         {
         }
     }

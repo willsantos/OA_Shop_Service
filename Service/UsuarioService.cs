@@ -8,7 +8,7 @@ using BC = BCrypt.Net.BCrypt;
 
 namespace Service
 {
-    public class UsuarioService : BaseService<Usuario>, IUsuarioService
+    public class UsuarioService : BaseService<Usuario, UsuarioCreateRequest, UsuarioResponse, UsuarioEditRequest>, IUsuarioService
     {
         private readonly IUsuarioRepository _repository;
         private readonly IMapper _mapper;
@@ -19,57 +19,35 @@ namespace Service
             _mapper = mapper;
         }
 
-        public UsuarioResponse CriarUsuario(UsuarioCreateRequest usuarioRequest)
+        public override Guid Adicionar(UsuarioCreateRequest request)
         {
-            var usuario = _mapper.Map<Usuario>(usuarioRequest);
+            var usuarioCreateRequest = request as UsuarioCreateRequest;
+            var usuario = _mapper.Map<Usuario>(usuarioCreateRequest);
             usuario.Senha = GerarHash(usuario.Senha);
             _repository.CriarEntidade(usuario);
-            return _mapper.Map<UsuarioResponse>(usuario);
+            return usuario.Id; 
         }
 
-        public UsuarioResponse BuscarUsuarioPorId(Guid id)
-        {
-            var usuario = _repository.BuscarEntidadePorId(id);
-            return _mapper.Map<UsuarioResponse>(usuario);
-        }
-
-        public IEnumerable<UsuarioResponse> BuscarUsuarios()
-        {
-            var usuarios = _repository.BuscarEntidades();
-            return _mapper.Map<IEnumerable<UsuarioResponse>>(usuarios);
-        }
-
-        public void DeletarUsuario(Guid id)
+        public override void Alterar(UsuarioEditRequest request, Guid id)
         {
             var usuario = _repository.BuscarEntidadePorId(id);
             if (usuario == null)
             {
                 throw new ArgumentNullException(nameof(usuario));
             }
-            _repository.DeletarEntidade(usuario);
-        }
-
-        public UsuarioResponse EditarUsuario(UsuarioEditRequest usuarioEditRequest, Guid id)
-        {
-            var usuario = _repository.BuscarEntidadePorId(id);
-            if (usuario == null)
+            if (!string.IsNullOrEmpty(request.Senha))
             {
-                throw new ArgumentNullException(nameof(usuario));
+                usuario.Senha = GerarHash(request.Senha);
             }
-            if (!string.IsNullOrEmpty(usuarioEditRequest.Senha))
+            if (!string.IsNullOrEmpty(request.Nome))
             {
-                usuario.Senha = GerarHash(usuarioEditRequest.Senha);
+                usuario.Nome = request.Nome;
             }
-            if (!string.IsNullOrEmpty(usuarioEditRequest.Nome))
+            if (!string.IsNullOrEmpty(request.Email))
             {
-                usuario.Nome = usuarioEditRequest.Nome;
-            }
-            if (!string.IsNullOrEmpty(usuarioEditRequest.Email))
-            {
-                usuario.Email = usuarioEditRequest.Email;
+                usuario.Email = request.Email;
             }
             _repository.EditarEntidade(usuario);
-            return _mapper.Map<UsuarioResponse>(usuario);
         }
 
         private string GerarHash(string senha)
