@@ -4,6 +4,7 @@ using Domain.Contracts.Responses;
 using Domain.Entities;
 using Domain.Interfaces.Repositories;
 using Domain.Interfaces.Services;
+using Domain.Utils;
 
 namespace Service
 {
@@ -21,7 +22,16 @@ namespace Service
         {
             var assinatura = _mapper.Map<Assinatura>(request);
 
+            try
+            {
             _repository.CriarEntidade(assinatura);
+            }
+            catch (Exception ex)
+            {
+                throw new Exception(ex.ToString());
+            }
+
+            var token = JwtToken.GeradorTokenAssinatura(assinatura);
 
             return assinatura.Id;
         }
