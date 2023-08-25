@@ -22,7 +22,6 @@ namespace Test.Utils
             };
 
             var jwtKey = Environment.GetEnvironmentVariable("OA_SHOP_JWTKEY");
-            Environment.SetEnvironmentVariable("OA_SHOP_JWTKEY", jwtKey);
 
             var expectedExpiration = DateTime.UtcNow.AddYears(1);
 
