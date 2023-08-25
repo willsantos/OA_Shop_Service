@@ -5,6 +5,8 @@ on:
 jobs:
   build:
     runs-on: ubuntu-latest
+    env:
+      OA_SHOP_JWTKEY: 123456
     steps:
       - name: Check out code
         uses: actions/checkout@v2
