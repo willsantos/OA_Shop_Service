@@ -17,12 +17,12 @@ namespace Domain.Utils
         public static JwtTokenResponse GeradorTokenAssinatura(Assinatura assinatura)
         {
             var tokenHandler = new JwtSecurityTokenHandler();
-            var key = Encoding.ASCII.GetBytes("U@WJChLSJ&keD^Rg*T6#g@EHwpgaPT2H$tD968a");
+            var key = Encoding.ASCII.GetBytes(Environment.GetEnvironmentVariable("OA_SHOP_JWTKEY"));
             var tokenDescriptor = new SecurityTokenDescriptor
             {
                 Subject = new ClaimsIdentity(new Claim[]
                  {
-                     //@TODO - Se necessário implementar informações da assinatura e/ou campos solicitados afim de personalizar o token gerado para uso futuro.
+                     new Claim(ClaimTypes.NameIdentifier, assinatura.UsuarioId.ToString()),
                  }),
                 Expires = DateTime.UtcNow.AddYears(1),
                 SigningCredentials = new SigningCredentials(new SymmetricSecurityKey(key),
