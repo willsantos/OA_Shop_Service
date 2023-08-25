@@ -21,6 +21,9 @@ namespace Test.Utils
                 UsuarioId = new Guid()
             };
 
+
+            Environment.SetEnvironmentVariable("OA_SHOP_JWTKEY", "5fAq3ZbN8VJL6mPx9uDsCtYeW2RvXzFh");
+
             var jwtKey = Environment.GetEnvironmentVariable("OA_SHOP_JWTKEY");
 
             var expectedExpiration = DateTime.UtcNow.AddYears(1);
