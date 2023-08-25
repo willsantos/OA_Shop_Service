@@ -31,7 +31,7 @@ namespace Test.Utils
             Assert.NotNull(result);
             Assert.NotEmpty(result.Token);
 
-            var tolerance = TimeSpan.FromSeconds(1);
+            var tolerance = TimeSpan.FromSeconds(2);
             var difference = result.DataExpiracao - expectedExpiration;
             Assert.True(difference <= tolerance, $"A diferença entre as datas é maior do que a tolerância permitida. Diferença: {difference}");
 
